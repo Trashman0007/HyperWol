@@ -51,7 +51,7 @@ Use the included `test_wol.bat` script to send a WoL packet to a Hyper-V VM on t
 
 1. **Run the Test Script**:
    - Navigate to `C:\Program Files\HyperWol`.
-   - Double-click `test_wol.bat` or run:
+   - Right-click `test_wol.bat` and select **Run as administrator**:
      ```cmd
      test_wol.bat
      ```

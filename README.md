@@ -1,2 +1,99 @@
 # HyperWol
-HyperWol is a lightweight Windows application that listens for Wake-on-LAN (WoL) packets to start Hyper-V virtual machines over networks.
+
+HyperWol is a lightweight Windows application that listens for Wake-on-LAN (WoL) packets to start Hyper-V virtual machines (VMs) automatically. It generates a configuration file (`config.json`) listing all Hyper-V VMs and their MAC addresses, then monitors UDP port 7 for WoL packets to trigger VM startup via PowerShell. Designed for seamless integration with external scripts (e.g., PHP-based WoL triggers), HyperWol runs as a Windows service using NSSM (Non-Sucking Service Manager).
+
+## Features
+- **Automatic VM Discovery**: Detects all Hyper-V VMs and their MAC addresses, storing them in `C:\ProgramData\HyperWol\config.json`.
+- **WoL Listener**: Listens on UDP port 7 for WoL magic packets and starts the corresponding VM.
+- **Service Integration**: Runs as a Windows service under the Local System Account for continuous operation.
+- **Event Logging**: Logs activity to Windows Event Viewer (under `HyperWol` source) for debugging.
+- **Bundled Installer**: Includes `hyperwol.exe`, NSSM, `wolcmd`, and scripts for easy setup and testing.
+
+## Requirements
+- Windows 10/11 or Windows Server with Hyper-V enabled.
+- Administrative privileges for installation.
+- Hyper-V machines on local computer. 
+
+## Installation
+1. **Download the Installer**:
+   - Download `HyperWol_Installer.exe` from the [Releases](https://github.com/YourUsername/HyperWol/releases) page.
+
+2. **Run the Installer**:
+   - Double-click `HyperWol_Installer.exe`. It automatically requests admin rights via a UAC prompt.
+   - The installer extracts `hyperwol.exe`, `nssm.exe`, `wolcmd.exe`, `add-hyperwol-service.cmd`, and `test_wol.bat` to `C:\Program Files\HyperWol`.
+   - It runs `add-hyperwol-service.cmd` as administrator to:
+     - Install the `HyperWol` service using NSSM.
+     - Configure the service to auto-start under the Local System Account.
+     - Start the service.
+
+3. **Verify Installation**:
+   - Open Command Prompt as administrator and run:
+     ```cmd
+     sc query HyperWol
+     ```
+     - Ensure `STATE: 4 RUNNING`.
+   - Check `C:\ProgramData\HyperWol\config.json` for VM details:
+     ```cmd
+     type C:\ProgramData\HyperWol\config.json
+     ```
+
+## Testing WoL Locally
+Use the included `test_wol.bat` script to send a WoL packet to a Hyper-V VM on the local machine:
+
+1. **Run the Test Script**:
+   - Navigate to `C:\Program Files\HyperWol`.
+   - Double-click `test_wol.cmd` or run:
+     ```cmd
+     test_wol.cmd
+     ```
+   - The script:
+     - Lists all Hyper-V VMs and their MAC addresses.
+     - Prompts you to select a VM (e.g., `Machine1`).
+     - Sends a WoL packet to `127.0.0.1:7` using `wolcmd`.
+
+## Usage
+- **Trigger WoL Remotely**:
+  - Use a WoL client (e.g., your PHP script) to send a magic packet to the server’s IP (e.g., `192.168.1.100`) on port 7 with the VM’s MAC address (e.g., `00:15:5D:01:64:11`).
+  - Example using `wolcmd`:
+    ```cmd
+    wolcmd 00155D016411 192.168.1.100 255.255.255.0 7
+    ```
+
+- **Monitor Logs**:
+  - Open Event Viewer (`eventvwr.msc`), navigate to Windows Logs > Application, and filter for `HyperWol`.
+  - Look for messages like “Listening for WoL packets on 0.0.0.0:7” or “Successfully started VM Machine1”.
+
+## Troubleshooting
+- **Service Not Starting**:
+  - Check service status:
+    ```cmd
+    sc query HyperWol
+    ```
+  - Ensure UDP port 7 is free:
+    ```cmd
+    netstat -ano | findstr :7
+    ```
+
+- **No VMs in `config.json`**:
+  - Verify Hyper-V is enabled and VMs exist:
+    ```powershell
+    Get-VM
+    ```
+  - Check Event Viewer for errors.
+
+## Uninstallation
+1. Stop and remove the service:
+   ```cmd
+   net stop HyperWol
+   sc delete HyperWol
+ 
+## License
+1. MIT License. See LICENSE for details.
+
+## Acknowledgments
+
+NSSM for service management.
+
+wolcmd for WoL packet testing.
+
+

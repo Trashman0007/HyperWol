@@ -25,7 +25,7 @@ HyperWol is a lightweight Windows application that listens for Wake-on-LAN (WoL)
      - `nssm.exe`: NSSM service manager.
      - `wolcmd.exe`: WoL packet sender for testing.
      - `add-hyperwol-service.cmd`: Script to install the service.
-     - `test_wol.bat`: Script to test WoL locally.
+     - `test_wol.cmd`: Script to test WoL locally.
 
 3. **Install the Service**:
    - Navigate to the extraction directory (e.g., `C:\Program Files\HyperWol`).
@@ -51,9 +51,9 @@ Use the included `test_wol.bat` script to send a WoL packet to a Hyper-V VM on t
 
 1. **Run the Test Script**:
    - Navigate to `C:\Program Files\HyperWol`.
-   - Right-click `test_wol.bat` and select **Run as administrator**:
+   - Right-click `test_wol.cmd` and select **Run as administrator**:
      ```cmd
-     test_wol.bat
+     test_wol.cmd
      ```
    - The script:
      - Lists all Hyper-V VMs and their MAC addresses.

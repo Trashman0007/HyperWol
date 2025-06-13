@@ -16,7 +16,7 @@ HyperWol is a lightweight Windows application that listens for Wake-on-LAN (WoL)
 
 ## Installation
 1. **Download the Package**:
-   - Download `HyperWol.zip` from the [Releases](https://github.com/YourUsername/HyperWol/releases) page.
+   - Download `HyperWol.zip` from the [Releases](https://github.com/Trashman0007/HyperWol/releases) page.
 
 2. **Extract the Package**:
    - Unzip `HyperWol.zip` to a directory (e.g., `C:\Program Files\HyperWol`).

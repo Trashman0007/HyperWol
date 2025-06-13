@@ -99,7 +99,6 @@ Use the included `test_wol.bat` script to send a WoL packet to a Hyper-V VM on t
   - Ensure the Local System Account has Hyper-V access.
 
 - **WoL Not Working**:
-  - Confirm the VM’s network adapter supports WoL in Hyper-V settings.
   - Test locally with `test_wol.bat`.
 
 ## Uninstallation
